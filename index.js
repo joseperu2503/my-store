@@ -13,10 +13,41 @@ app.get('/nueva-ruta', (req,res) => {
 })
 
 app.get('/products', (req,res) => {
-  res.json({
-    name: 'junior',
-    lastname: 'perez'
-  })
+  res.json([
+    {
+      name: 'junior',
+      lastname: 'perez'
+    },
+    {
+      name: 'jose',
+      lastname: 'perez'
+    },
+  ])
+})
+
+app.get('/products/:id', (req,res) => {
+  const {id} = req.params
+
+  res.json([
+    {
+      id: id,
+      name: 'junior',
+      lastname: 'perez'
+    }
+  ])
+})
+
+app.get('/categories/:categoryId/products/:productId', (req,res) => {
+  const {categoryId, productId} = req.params
+
+  res.json([
+    {
+      categoryId,
+      productId,
+      name: 'junior',
+      lastname: 'perez'
+    }
+  ])
 })
 
 //-----------------------------------------
