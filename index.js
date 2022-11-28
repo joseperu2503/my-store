@@ -1,5 +1,6 @@
 //-------------------------------------------
 const express = require('express')
+const faker = require('faker')
 const app = express()
 const port = 3000
 
@@ -13,16 +14,37 @@ app.get('/nueva-ruta', (req,res) => {
 })
 
 app.get('/products', (req,res) => {
-  res.json([
-    {
-      name: 'junior',
-      lastname: 'perez'
-    },
-    {
-      name: 'jose',
-      lastname: 'perez'
-    },
-  ])
+  const products = []
+  const {size} = req.query
+  const limit = size || 10
+
+  for (let index = 0; index < limit; index++) {
+    products.push({
+      id: index + 1 ,
+      name: faker.commerce.productName(),
+      price: parseInt(faker.commerce.price(), 10),
+      image: faker.image.imageUrl()
+    })
+
+  }
+  res.json(products)
+})
+
+app.get('/users', (req,res) => {
+  const {limit, offset} = req.query
+  if(limit && offset){
+    res.json({
+      limit,
+      offset
+    })
+  }else{
+    res.send('No hay parametros')
+  }
+})
+
+//-----------endpoint estatico debe ir antes de los endpoints dinamicos
+app.get('/products/filter', (req,res) => {
+  res.send('yo soy un filter')
 })
 
 app.get('/products/:id', (req,res) => {
@@ -36,6 +58,8 @@ app.get('/products/:id', (req,res) => {
     }
   ])
 })
+//-------------------------------------------------------
+
 
 app.get('/categories/:categoryId/products/:productId', (req,res) => {
   const {categoryId, productId} = req.params
