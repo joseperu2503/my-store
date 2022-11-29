@@ -6,7 +6,7 @@ const port = 3000
 app.use(express.json())
 
 const routerApi = require('./routes')
-const { logErrors, errorHandler } = require('./middlewares/error.handler')
+const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler')
 
 //------Routing-------------------------------
 app.get('/', (req,res) => {
@@ -33,6 +33,7 @@ app.get('/categories/:categoryId/products/:productId', (req,res) => {
 routerApi(app)
 
 app.use(logErrors)
+app.use(boomErrorHandler)
 app.use(errorHandler)
 
 //-----------------------------------------
